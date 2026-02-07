@@ -57,8 +57,6 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const getMetric = (type: string) => latestMetrics?.find((m) => m.metric_type === type);
-
   return (
     <div className="space-y-6">
       {/* Header */}

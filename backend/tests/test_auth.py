@@ -1,10 +1,8 @@
 """Authentication endpoint tests."""
 
-import pytest
 from httpx import AsyncClient
 
 
-@pytest.mark.asyncio
 async def test_register(client: AsyncClient):
     res = await client.post(
         "/api/v1/auth/register",
@@ -21,7 +19,6 @@ async def test_register(client: AsyncClient):
     assert data["token_type"] == "bearer"
 
 
-@pytest.mark.asyncio
 async def test_register_duplicate(client: AsyncClient):
     payload = {
         "email": "dup@test.com",
@@ -33,7 +30,6 @@ async def test_register_duplicate(client: AsyncClient):
     assert res.status_code == 409
 
 
-@pytest.mark.asyncio
 async def test_login(client: AsyncClient, test_user):
     res = await client.post(
         "/api/v1/auth/login",
@@ -44,7 +40,6 @@ async def test_login(client: AsyncClient, test_user):
     assert "access_token" in data
 
 
-@pytest.mark.asyncio
 async def test_login_wrong_password(client: AsyncClient, test_user):
     res = await client.post(
         "/api/v1/auth/login",
@@ -53,7 +48,6 @@ async def test_login_wrong_password(client: AsyncClient, test_user):
     assert res.status_code == 401
 
 
-@pytest.mark.asyncio
 async def test_me(client: AsyncClient, test_user):
     login_res = await client.post(
         "/api/v1/auth/login",

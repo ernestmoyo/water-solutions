@@ -1,9 +1,17 @@
 """Water project and tenant models."""
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from enum import Enum
+from typing import TYPE_CHECKING
 
 from sqlmodel import Field, SQLModel, Relationship
+
+from app.models.link import UserTenant
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class ProjectStatus(str, Enum):
@@ -30,7 +38,7 @@ class Tenant(SQLModel, table=True):
     __tablename__ = "tenants"
 
     id: int | None = Field(default=None, primary_key=True)
-    name: str = Field(unique=True, max_length=255)  # e.g., "DAWASA", "DUWASA"
+    name: str = Field(unique=True, max_length=255)
     code: str = Field(unique=True, max_length=20)
     region: str = Field(max_length=100)
     contact_email: str | None = Field(default=None, max_length=255)
@@ -39,11 +47,11 @@ class Tenant(SQLModel, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    users: list["User"] = Relationship(  # type: ignore
+    users: list[User] = Relationship(
         back_populates="tenants",
         link_model=UserTenant,
     )
-    projects: list["WaterProject"] = Relationship(back_populates="tenant")
+    projects: list[WaterProject] = Relationship(back_populates="tenant")
 
 
 class WaterProject(SQLModel, table=True):
@@ -78,9 +86,3 @@ class WaterProject(SQLModel, table=True):
     commissioned_date: datetime | None = Field(default=None)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-
-# Resolve forward references
-from app.models.user import User, UserTenant  # noqa: E402, F811
-
-Tenant.model_rebuild()

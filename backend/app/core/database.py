@@ -41,6 +41,7 @@ async def init_db() -> None:
     """Create tables. In production, use Alembic migrations."""
     from sqlmodel import SQLModel
     # Import all models so they register with SQLModel metadata
+    import app.models.link  # noqa: F401
     import app.models.user  # noqa: F401
     import app.models.project  # noqa: F401
     import app.models.metric  # noqa: F401
