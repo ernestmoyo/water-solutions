@@ -3,18 +3,6 @@ import type { WaterProject } from "@/types";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Fix default marker icons in Leaflet + bundlers
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
-delete (L.Icon.Default.prototype as Record<string, unknown>)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
-
 // Color markers by status
 const statusColors: Record<string, string> = {
   operational: "#22c55e",

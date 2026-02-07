@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import KPICards from "@/components/Dashboard/KPICards";
-import FlowChart from "@/components/Charts/FlowChart";
 import RegionBarChart from "@/components/Charts/RegionBarChart";
 import AlertList from "@/components/Alerts/AlertList";
 import ProjectMap from "@/components/Maps/ProjectMap";

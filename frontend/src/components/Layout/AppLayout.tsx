@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   LogOut,
-  User,
   ChevronDown,
 } from "lucide-react";
 

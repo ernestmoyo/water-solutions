@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import api from "@/lib/api";
 import type { WaterProject } from "@/types";
-import { Search, Filter, Droplets, MapPin, Users, ChevronRight } from "lucide-react";
+import { Search, Droplets, MapPin, Users, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 const statusColors: Record<string, string> = {

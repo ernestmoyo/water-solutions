@@ -1,14 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import type { DashboardKPIs, RegionSummary } from "@/types";
-import { FileText, Download, Loader2 } from "lucide-react";
+import type { RegionSummary } from "@/types";
+import { FileText, Download } from "lucide-react";
 
 export default function ReportsPage() {
-  const { data: kpis } = useQuery<DashboardKPIs>({
-    queryKey: ["kpis"],
-    queryFn: () => api.get("/dashboard/kpis").then((r) => r.data),
-  });
-
   const { data: regions } = useQuery<RegionSummary[]>({
     queryKey: ["regions"],
     queryFn: () => api.get("/dashboard/regions").then((r) => r.data),

@@ -1,6 +1,7 @@
 """Test configuration and fixtures."""
 
 import asyncio
+import os
 from collections.abc import AsyncGenerator
 
 import pytest
@@ -11,12 +12,19 @@ from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from app.main import app
-from app.core.database import get_session
-from app.core.security import hash_password
-from app.models.user import User
+# Set test env before importing app
+os.environ.setdefault(
+    "DATABASE_URL",
+    "postgresql+asyncpg://test:test@localhost:5432/test_izbezkali",
+)
+os.environ.setdefault("SECRET_KEY", "test-secret-key")
 
-TEST_DATABASE_URL = "sqlite+aiosqlite:///./test.db"
+from app.main import app  # noqa: E402
+from app.core.database import get_session  # noqa: E402
+from app.core.security import hash_password  # noqa: E402
+from app.models.user import User  # noqa: E402
+
+TEST_DATABASE_URL = os.environ["DATABASE_URL"]
 
 engine = create_async_engine(TEST_DATABASE_URL, echo=False)
 test_session_factory = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
@@ -31,6 +39,9 @@ def event_loop():
 
 @pytest_asyncio.fixture(autouse=True)
 async def setup_db():
+    # Import all models so metadata is populated
+    import app.models  # noqa: F401
+
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
     yield
