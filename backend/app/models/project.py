@@ -1,17 +1,11 @@
 """Water project and tenant models."""
 
-from __future__ import annotations
-
 from datetime import datetime, timezone
 from enum import Enum
-from typing import TYPE_CHECKING
 
 from sqlmodel import Field, SQLModel, Relationship
 
 from app.models.link import UserTenant
-
-if TYPE_CHECKING:
-    from app.models.user import User
 
 
 class ProjectStatus(str, Enum):
@@ -47,11 +41,11 @@ class Tenant(SQLModel, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    users: list[User] = Relationship(
+    users: list["User"] = Relationship(
         back_populates="tenants",
         link_model=UserTenant,
     )
-    projects: list[WaterProject] = Relationship(back_populates="tenant")
+    projects: list["WaterProject"] = Relationship(back_populates="tenant")
 
 
 class WaterProject(SQLModel, table=True):

@@ -1,16 +1,10 @@
 """User model."""
 
-from __future__ import annotations
-
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING
 
 from sqlmodel import Field, SQLModel, Relationship
 
 from app.models.link import UserTenant
-
-if TYPE_CHECKING:
-    from app.models.project import Tenant
 
 
 class User(SQLModel, table=True):
@@ -29,7 +23,7 @@ class User(SQLModel, table=True):
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # Relationships
-    tenants: list[Tenant] = Relationship(
+    tenants: list["Tenant"] = Relationship(
         back_populates="users",
         link_model=UserTenant,
     )
