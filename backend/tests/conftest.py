@@ -6,6 +6,7 @@ from collections.abc import AsyncGenerator
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.pool import NullPool
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
@@ -24,7 +25,7 @@ from app.models.user import User  # noqa: E402
 
 TEST_DATABASE_URL = os.environ["DATABASE_URL"]
 
-engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+engine = create_async_engine(TEST_DATABASE_URL, echo=False, poolclass=NullPool)
 test_session_factory = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
