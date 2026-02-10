@@ -72,8 +72,8 @@ api.interceptors.response.use(
   async (error) => {
     const config = (error.config ?? {}) as AxiosRequestConfig & { _retry?: boolean };
 
-    // Mock short-circuit (mock token) or backend unreachable / bad gateway
-    if (error.__isMock || !error.response || [502, 503, 504].includes(error.response?.status)) {
+    // Mock short-circuit (mock token), backend unreachable, or proxy error (5xx)
+    if (error.__isMock || !error.response || (error.response?.status ?? 0) >= 500) {
       try {
         const data = tryMockDispatch(config);
         return mockAxiosResponse(config, data);
